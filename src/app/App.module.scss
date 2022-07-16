@@ -1,0 +1,25 @@
+@import './../styles/mixins.module';
+@import './../styles/vars.module';
+
+
+.wrapper{
+  margin-top: 5px;
+
+  .container{
+    max-width: 1260px;
+    padding: 0 10px;
+    margin: 0 auto;
+    background-color: $outPhone;
+    border-bottom: 4px solid $outPhone;
+    .inner{
+      .main{
+        display: grid;
+        grid-template-columns: 20% 80%;
+        column-gap: 10px;
+        height: 90vh;
+        background-color: $innerPhone;
+
+      }
+    }
+  }
+}

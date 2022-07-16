@@ -1,0 +1,41 @@
+@import './../../styles/mixins.module';
+@import './../../styles/vars.module';
+
+.inner {
+  @include flexEdit(space-between, center);
+  padding: $blockPadding;
+  background-color:$outPhone;
+
+
+  .logo {
+    width: 40px;
+    height: 40px;
+    background-color: $interestColor;
+    border-radius: 50%;
+  }
+  .editPanel{
+    .addBtn{
+      width: 100px;
+      height: 40px;
+      border-radius: $borderRadius;
+    }
+  }
+
+  .searchBlock {
+    .inputWrap {
+      position: relative;
+      input {
+        padding: 0 0 0 35px;
+        height: 40px;
+        width: 200px;
+        border-radius: $borderRadius;
+      }
+      .searchIcon {
+        position: absolute;
+        top: 50%;
+        left: 5px;
+        transform: translateY(-50%);
+      }
+    }
+  }
+}
