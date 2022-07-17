@@ -2,7 +2,8 @@ import React from 'react';
 import s from './App.module.scss';
 import {Header} from "../components/header/Header";
 import {SideBar} from "../components/sidebar/Sidebar";
-import {NotePage} from "../components/notePage/NotePage";
+import {WorkSpace} from "../components/workSpace/WorkSpace";
+
 function App() {
   return (
     <div className={s.wrapper}>
@@ -11,7 +12,7 @@ function App() {
              <Header/>
               <main className={s.main}>
                   <SideBar/>
-                  <NotePage/>
+                  <WorkSpace/>
               </main>
           </div>
         </div>

@@ -1,26 +1,41 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect} from 'react';
 import s from './index.module.scss';
 import {Item} from "./item/Item";
+import {noteActions, noteSelectors} from "../../redux";
+import {useDispatch, useSelector} from "react-redux";
+import {useLiveQuery} from "dexie-react-hooks";
+import {db} from "../../db/db";
 
-export const SideBar:FC=()=>{
-  return (
-    <div className={s.wrapper}>
-        <Item time={'01/02/03'}
-              title={'Новая заметка'}
-        >no additional text...</Item>
-        <Item time={'01/02/03'}
-              title={'Шмот'}
-        >Фронтенд...</Item>
-        <Item time={'01/02/03'}
-              title={'Шмот'}
-        >Фронтенд...</Item>
-        <Item time={'01/02/03'}
-              title={'Планы на день'}
-        >Фронтенд...</Item>
-        <Item time={'01/02/03'}
-              title={'Шмот'}
-        >Фронтенд...</Item>
-    </div>
-  );
+const {setNotes} = noteActions
+
+const {notes} = noteSelectors
+export const SideBar: FC = () => {
+    const dispatch = useDispatch()
+
+    const allNotes = useSelector(notes)
+
+    const dbNotes = useLiveQuery(
+         async() => await db.notes.toArray()
+    )
+
+    useEffect(() => {
+        if (dbNotes) {
+            dispatch(setNotes(dbNotes))
+            console.log(dbNotes)
+
+        }
+    })
+    console.log('allNotes  '+allNotes)
+    return (
+        <div className={s.wrapper}>
+            {
+                allNotes.map((note, index) => {
+                    return (
+                        <Item title={note.title} time={note.date} id={note.id} key={index}>{note.text}</Item>
+                    )
+                })
+            }
+        </div>
+    );
 }
 

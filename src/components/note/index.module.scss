@@ -1,0 +1,23 @@
+.noteBlock{
+  .content{
+    text-align: left;
+    .inputWrap{
+      margin-bottom: 10px;
+      text-align: left;
+
+      h3{
+        margin: 0 0 10px 0;
+      }
+
+      input{
+        height: 40px;
+        width: 400px;
+      }
+      textarea{
+        height: 100px;
+        width: 400px;
+        resize: none;
+      }
+    }
+  }
+}

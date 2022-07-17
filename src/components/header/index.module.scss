@@ -14,10 +14,12 @@
     border-radius: 50%;
   }
   .editPanel{
-    .addBtn{
+    .addLink{
       width: 100px;
       height: 40px;
       border-radius: $borderRadius;
+      text-decoration: none;
+      color:black;
     }
   }
 

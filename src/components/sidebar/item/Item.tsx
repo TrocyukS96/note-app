@@ -1,27 +1,44 @@
 import {FC, useState} from "react";
 import s from './intex.module.scss';
+import {NavLink, useNavigate} from "react-router-dom";
+import {db} from "../../../db/db";
 
-interface IProps{
-    title:string
-    time:string
-    className?:string
-    children:any
+interface IProps {
+    title: string
+    time: string
+    className?: string
+    children: any
+    id?: number
 
 }
 
-export const Item:FC<IProps>=({title,time,className,children})=>{
-    let [editPanel,setEditPanel]=useState(false)
+export const Item: FC<IProps> = ({title, time, className, children, id}) => {
+    let [editPanel, setEditPanel] = useState(false)
 
-    const editPanelHandler=()=> {
+    const editPanelHandler = () => {
         setEditPanel(!editPanel)
     }
 
-    return(
+    const deleteNote = async () => {
+        try {
+            if(id){
+                await db.notes.delete(id)
+            }
+        } catch (error) {
+        }
+    }
+
+    const deleteNoteHandler = () => {
+        deleteNote()
+    }
+    return (
         <div className={className ?
             `${s.wrapper} ${className}` : s.wrapper}
-             onClick={editPanelHandler}
+             onClick={() => setEditPanel(true)}
         >
-            <h4>{title}</h4>
+            <NavLink to={`notes/${id}`}>
+                {title}
+            </NavLink>
             <div className={s.content}>
                 <span>{time}</span>
                 <p>{children}</p>
@@ -29,7 +46,7 @@ export const Item:FC<IProps>=({title,time,className,children})=>{
             {editPanel &&
                 <div className={s.btnBlock}>
                     <button>Edit</button>
-                    <button>Delete</button>
+                    <button onClick={deleteNoteHandler}>Delete</button>
                 </div>
             }
         </div>
