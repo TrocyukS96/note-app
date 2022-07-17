@@ -4,14 +4,15 @@ import {Route, Routes} from "react-router-dom";
 import {Note} from "../note/Note";
 import {NewNote} from "../newNote/NewNote";
 interface IProps {
-
+    isEdit:boolean
+    setEdit:(value:boolean)=>void
 }
 
-export const WorkSpace:FC<IProps>=()=>{
+export const WorkSpace:FC<IProps>=({isEdit,setEdit})=>{
     return(
         <div className={s.wrapper}>
             <Routes>
-                <Route path={"/notes/:id"} element={<Note title={'1'} time={'01/01/01'}/>} />
+                <Route path={"/notes/:id"} element={<Note isEdit={isEdit} setEdit={setEdit}/>} />
                 <Route path={"/new"} element={<NewNote/>} />
             </Routes>
         </div>

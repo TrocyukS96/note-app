@@ -1,12 +1,6 @@
+@import "./src/styles/vars.module";
+
 .wrapper{
   padding: 10px;
   text-align: center;
-  .content{
-    margin-top: 10px;
-    text-align: left;
-
-    h1{
-      margin: 0;
-    }
-  }
 }

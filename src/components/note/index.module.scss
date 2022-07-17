@@ -1,4 +1,15 @@
+@import "./../../styles/vars.module";
 .noteBlock{
+  .time{}
+  .content{
+      h1,div{
+        text-align: left;
+
+
+      }
+  }
+}
+.noteEditBlock{
   .content{
     text-align: left;
     .inputWrap{

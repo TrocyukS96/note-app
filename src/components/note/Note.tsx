@@ -1,23 +1,30 @@
-import {ChangeEvent, FC, useState} from "react";
+import {ChangeEvent, FC, useEffect, useState} from "react";
 import s from './index.module.scss';
 import {useParams} from "react-router-dom";
 import {db} from "../../db/db";
 import {useLiveQuery} from "dexie-react-hooks";
-import {useSelector} from "react-redux";
-import {noteSelectors} from "../../redux";
 
 interface IProps {
-    time?: string
-    title?: string
-    isNew?: boolean
+    isEdit?: boolean
+    setEdit:(value:boolean)=>void
 }
 
-
-export const Note: FC<IProps> = ({time, title, isNew}) => {
+export const Note: FC<IProps> = ({isEdit,setEdit}) => {
     const {id} = useParams()
-    const allNotes = useSelector(noteSelectors.notes)
+
+    const note = useLiveQuery(
+        async () => await db.notes.where('id').equals(Number(id)).toArray(), [id]
+    )
+
     const [inputTitle, setInputTitle] = useState('')
     const [inputText, setInputText] = useState('')
+
+    useEffect(()=>{
+        setInputTitle(note ? note[0].title : '')
+        setInputText(note ? note[0].text : '')
+    },[note])
+
+
     const addTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setInputTitle(e.currentTarget.value)
     }
@@ -26,34 +33,31 @@ export const Note: FC<IProps> = ({time, title, isNew}) => {
         setInputText(e.currentTarget.value)
     }
 
-    const currentDate = new Date().toLocaleString()
+    console.log('inputTitle  ->' + inputTitle)
 
-    async function addNote() {
+    async function updateNote() {
         try {
-              await db.notes.add({
+            await db.notes.update(Number(id),{
                 title: inputTitle,
                 text: inputText,
-                date: currentDate
+                date: note ? note[0].date : ''
             })
         } catch (error) {
             console.log(error)
         }
     }
 
-    const addNoteHandler = () => {
+    const updateNoteHandler = () => {
+        updateNote()
         setInputTitle('')
         setInputText('')
-        addNote()
+        setEdit(false)
     }
 
-        const note = useLiveQuery(
-                async ()=>await db.notes.where('id').equals(Number(id)).toArray(),[id]
-        )
-
-    if (isNew) {
+    if (isEdit) {
         return (
-            <div className={s.noteBlock}>
-                <span>{currentDate}</span>
+            <div className={s.noteEditBlock}>
+                <span>{note ? note[0].date : ''}</span>
                 <div className={s.content}>
                     <div className={s.inputWrap}>
                         <h3>Title</h3>
@@ -63,17 +67,18 @@ export const Note: FC<IProps> = ({time, title, isNew}) => {
                         <h3>Text</h3>
                         <textarea placeholder={'write a note'} onChange={addTextHandler} value={inputText}/>
                     </div>
-                    <button onClick={addNoteHandler}>save changes</button>
+                    <button onClick={updateNoteHandler}>save changes</button>
                 </div>
             </div>
         )
     }
 
     return (
-        <div>
+        <div className={s.noteBlock}>
             <span className={s.time}>{note ? note[0].date : ''}</span>
             <div className={s.content}>
                 <h1>{note ? note[0].title : ''}</h1>
+                <div>{note ? note[0].text : ''}</div>
             </div>
         </div>
     )

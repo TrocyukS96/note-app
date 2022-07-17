@@ -14,7 +14,11 @@ export const NewNote: FC = ({}) => {
         setInputText(e.currentTarget.value)
     }
 
-    const currentDate = new Date().toLocaleString()
+    const currentDate = new Date().toLocaleString('ru',{
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    })
 
     async function addNote() {
         try {
