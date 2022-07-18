@@ -1,7 +1,9 @@
-import {FC, useEffect, useState} from "react";
+import {FC} from "react";
 import s from './intex.module.scss';
-import {NavLink, useLocation, useMatch} from "react-router-dom";
-import {db} from "../../../db/db";
+import {NavLink, useLocation} from "react-router-dom";
+import {useActions} from "../../../utils/redux-utils";
+import {noteActions, noteSelectors} from "../../../redux";
+import {useSelector} from "react-redux";
 
 interface IProps {
     title: string
@@ -9,34 +11,26 @@ interface IProps {
     className?: string
     children: any
     id?: number
-    setEdit:(value:boolean)=>void
-    isEdit:boolean
 
 }
 
 export const Item: FC<IProps> = (
-    {title, date,
-        className, children,
-        id,setEdit,isEdit}) => {
+    {title,
+        date,
+        className,
+        children,
+        id,
+    }) => {
     let location = useLocation();
-    console.log(location.pathname)
-
-    const deleteNote = async () => {
-        try {
-            if (id) {
-                await db.notes.delete(id)
-            }
-        } catch (error) {
-        }
-    }
+    const {removeNote,setIsEdit} = useActions(noteActions)
+    const isEdit = useSelector(noteSelectors.isEdit)
 
     const deleteNoteHandler = () => {
-        deleteNote()
+        removeNote(Number(id))
     }
 
-
     const editHandler =()=>{
-        setEdit(!isEdit)
+        setIsEdit({value:!isEdit})
     }
     return (
         <NavLink to={`notes/${id}`}

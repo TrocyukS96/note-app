@@ -1,73 +1,60 @@
 import {ChangeEvent, FC, useEffect, useState} from "react";
 import s from './index.module.scss';
 import {useParams} from "react-router-dom";
-import {db} from "../../db/db";
-import {useLiveQuery} from "dexie-react-hooks";
+import {useSelector} from "react-redux";
+import {noteActions, noteSelectors} from "../../redux";
+import {useActions} from "../../utils/redux-utils";
 
-interface IProps {
-    isEdit?: boolean
-    setEdit:(value:boolean)=>void
-}
-
-export const Note: FC<IProps> = ({isEdit,setEdit}) => {
+export const Note: FC = () => {
     const {id} = useParams()
-
-    const note = useLiveQuery(
-        async () => await db.notes.where('id').equals(Number(id)).toArray(), [id]
-    )
-
-    const [inputTitle, setInputTitle] = useState('')
-    const [inputText, setInputText] = useState('')
+    const {fetchCurrentNote,setIsEdit, updateNote} = useActions(noteActions)
+    const currentNote = useSelector(noteSelectors.currentNote)
+    const isEdit = useSelector(noteSelectors.isEdit)
+    const [title, setTitle] = useState('')
+    const [text, setText] = useState('')
 
     useEffect(()=>{
-        setInputTitle(note ? note[0].title : '')
-        setInputText(note ? note[0].text : '')
-    },[note])
-
+        fetchCurrentNote(Number(id))
+        setTitle(currentNote.title)
+        setText(currentNote.text)
+    },[id,currentNote])
 
     const addTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setInputTitle(e.currentTarget.value)
+        setTitle(e.currentTarget.value)
+        updateNote({
+            noteData: {
+                title:e.currentTarget.value, text, date: currentNote.date
+            }, id: Number(id)
+        })
     }
 
     const addTextHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        setInputText(e.currentTarget.value)
+        setText(e.currentTarget.value)
+        updateNote({
+            noteData: {
+                title, text:e.currentTarget.value, date: currentNote.date
+            }, id: Number(id)
+        })
     }
 
-    console.log('inputTitle  ->' + inputTitle)
-
-    async function updateNote() {
-        try {
-            await db.notes.update(Number(id),{
-                title: inputTitle,
-                text: inputText,
-                date: note ? note[0].date : ''
-            })
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const updateNoteHandler = () => {
-        updateNote()
-        setInputTitle('')
-        setInputText('')
-        setEdit(false)
+    const closeEditPanelHandler = () => {
+        setIsEdit({value: false})
     }
 
     if (isEdit) {
         return (
             <div className={s.noteEditBlock}>
-                <span>{note ? note[0].date : ''}</span>
+                <span>{currentNote.date}</span>
                 <div className={s.content}>
                     <div className={s.inputWrap}>
                         <h3>Title</h3>
-                        <input type="text" placeholder={'write a title'} onChange={addTitleHandler} value={inputTitle}/>
+                        <input type="text" placeholder={'write a title'} onChange={addTitleHandler} value={title}/>
                     </div>
                     <div className={s.inputWrap}>
                         <h3>Text</h3>
-                        <textarea placeholder={'write a note'} onChange={addTextHandler} value={inputText}/>
+                        <textarea placeholder={'write a note'} onChange={addTextHandler} value={text}/>
                     </div>
-                    <button onClick={updateNoteHandler}>save changes</button>
+                    <button onClick={closeEditPanelHandler}>close edit panel</button>
                 </div>
             </div>
         )
@@ -75,10 +62,10 @@ export const Note: FC<IProps> = ({isEdit,setEdit}) => {
 
     return (
         <div className={s.noteBlock}>
-            <span className={s.time}>{note ? note[0].date : ''}</span>
+            <span className={s.time}>{currentNote.date}</span>
             <div className={s.content}>
-                <h1>{note ? note[0].title : ''}</h1>
-                <div>{note ? note[0].text : ''}</div>
+                <h1>{currentNote.title}</h1>
+                <div>{currentNote.text}</div>
             </div>
         </div>
     )

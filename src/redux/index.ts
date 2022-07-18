@@ -1,9 +1,11 @@
-import { slice} from './noteReducer';
+import {asyncActions, slice} from './noteReducer';
 import * as noteSelectors from './selectors';
 const notesReducer = slice.reducer
 
 const noteActions = {
-    ...slice.actions
+    ...asyncActions,
+    ...slice.actions,
+
 }
 
 export {
