@@ -15,13 +15,12 @@
   }
   .editPanel{
     .addLink{
-      padding: 5px;
+      @include commonBtnStyles();
+      padding:7px;
       width: 100px;
-      height: 40px;
-      border-radius: 4px;
       text-decoration: none;
-      color:black;
-      background-color: white;
+      color:$textColor;
+
     }
   }
 

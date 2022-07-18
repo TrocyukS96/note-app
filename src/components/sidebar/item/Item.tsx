@@ -39,7 +39,7 @@ export const Item: FC<IProps> = react.memo((
     return (
         <NavLink to={`notes/${id}`}
                  className={s.link}
-                 style={location.pathname === `/notes/${id}` ? {backgroundColor: '#E96344'} : {}}
+                 style={location.pathname === `/notes/${id}` ? {backgroundColor: 'rgb(255 231 226)'} : {}}
         >
 
             <h4>{title}</h4>

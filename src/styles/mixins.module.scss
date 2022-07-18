@@ -1,3 +1,5 @@
+@import "./vars.module";
+
 @mixin toCenterBlock (){
   position: absolute;
   left: 50%;
@@ -11,4 +13,13 @@
   align-items: $alignItems;
   flex-direction: $flexDirection;
   gap:$gap;
+}
+
+@mixin commonBtnStyles(){
+  height: 40px;
+  border-radius: 6px;
+  box-shadow: $boxShadow;
+  background-color: $interestColor;
+  font-size: 18px;
+  border-style: none;
 }

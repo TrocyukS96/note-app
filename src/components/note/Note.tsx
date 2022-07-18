@@ -1,6 +1,6 @@
 import {ChangeEvent, useEffect, useState} from "react";
 import s from './index.module.scss';
-import {useParams} from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {noteActions, noteSelectors} from "../../redux";
 import {useActions} from "../../utils/redux-utils";
