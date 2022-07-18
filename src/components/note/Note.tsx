@@ -1,14 +1,15 @@
-import {ChangeEvent, FC, useEffect, useState} from "react";
+import {ChangeEvent, useEffect, useState} from "react";
 import s from './index.module.scss';
 import {useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {noteActions, noteSelectors} from "../../redux";
 import {useActions} from "../../utils/redux-utils";
 
-export const Note: FC = () => {
+export const Note = () => {
     const {id} = useParams()
     const {fetchCurrentNote,setIsEdit, updateNote} = useActions(noteActions)
     const currentNote = useSelector(noteSelectors.currentNote)
+    const notes = useSelector(noteSelectors.notes)
     const isEdit = useSelector(noteSelectors.isEdit)
     const [title, setTitle] = useState('')
     const [text, setText] = useState('')
@@ -56,6 +57,14 @@ export const Note: FC = () => {
                     </div>
                     <button onClick={closeEditPanelHandler}>close edit panel</button>
                 </div>
+            </div>
+        )
+    }
+
+    if(notes.length<=0){
+        return(
+            <div className={s.noDataNotice}>
+                no data yet...
             </div>
         )
     }

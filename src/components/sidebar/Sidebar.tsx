@@ -2,12 +2,13 @@ import React, {FC} from 'react';
 import s from './index.module.scss';
 import {Item} from "./item/Item";
 import {NoteType} from "../../app/types";
+import react from 'react';
 
 interface IProps {
     filteredNotes: NoteType[]
 }
 
-export const SideBar: FC<IProps> = ({filteredNotes}) => {
+export const SideBar: FC<IProps> = react.memo(({filteredNotes}) => {
     return (
         <div className={s.wrapper}>
             {
@@ -23,5 +24,5 @@ export const SideBar: FC<IProps> = ({filteredNotes}) => {
             }
         </div>
     );
-}
+})
 

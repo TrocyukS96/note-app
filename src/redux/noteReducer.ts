@@ -49,7 +49,7 @@ export const slice = createSlice({
         notes: [] as NoteType[],
         isEdit: false,
         currentNote: {} as NoteType,
-        currentId:null as number | null
+        currentId: null as number | null
     },
     reducers: {
         setNotes(state, action: PayloadAction<NoteType[]>) {

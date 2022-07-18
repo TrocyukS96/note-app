@@ -1,4 +1,4 @@
-import {FC} from "react";
+import react, {FC} from "react";
 import s from './intex.module.scss';
 import {NavLink, useLocation} from "react-router-dom";
 import {useActions} from "../../../utils/redux-utils";
@@ -14,33 +14,35 @@ interface IProps {
 
 }
 
-export const Item: FC<IProps> = (
-    {title,
+export const Item: FC<IProps> = react.memo((
+    {
+        title,
         date,
         className,
         children,
         id,
     }) => {
     let location = useLocation();
-    const {removeNote,setIsEdit} = useActions(noteActions)
+    const {removeNote, setIsEdit} = useActions(noteActions)
     const isEdit = useSelector(noteSelectors.isEdit)
 
     const deleteNoteHandler = () => {
         const acceptAction = window.confirm('Are you sure?')
-        if(acceptAction){
+        if (acceptAction) {
             removeNote(Number(id))
         }
     }
 
-    const editHandler =()=>{
-        setIsEdit({value:!isEdit})
+    const editHandler = () => {
+        setIsEdit({value: !isEdit})
     }
     return (
         <NavLink to={`notes/${id}`}
                  className={s.link}
                  style={location.pathname === `/notes/${id}` ? {backgroundColor: '#E96344'} : {}}
         >
-            {title}
+
+            <h4>{title}</h4>
             <div className={className ?
                 `${s.wrapper} ${className}` : s.wrapper}
             >
@@ -58,4 +60,4 @@ export const Item: FC<IProps> = (
             </div>
         </NavLink>
     )
-}
+})
