@@ -26,7 +26,10 @@ export const Item: FC<IProps> = (
     const isEdit = useSelector(noteSelectors.isEdit)
 
     const deleteNoteHandler = () => {
-        removeNote(Number(id))
+        const acceptAction = window.confirm('Are you sure?')
+        if(acceptAction){
+            removeNote(Number(id))
+        }
     }
 
     const editHandler =()=>{

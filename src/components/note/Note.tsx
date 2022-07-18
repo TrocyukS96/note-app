@@ -41,7 +41,7 @@ export const Note: FC = () => {
         setIsEdit({value: false})
     }
 
-    if (isEdit) {
+    if (isEdit ) {
         return (
             <div className={s.noteEditBlock}>
                 <span>{currentNote.date}</span>

@@ -15,11 +15,13 @@
   }
   .editPanel{
     .addLink{
+      padding: 5px;
       width: 100px;
       height: 40px;
-      border-radius: $borderRadius;
+      border-radius: 4px;
       text-decoration: none;
       color:black;
+      background-color: white;
     }
   }
 

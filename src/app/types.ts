@@ -7,11 +7,6 @@ export type NoteType={
     id?:number
 }
 
-export interface Filters {
-    query?: string;
-}
-
-
 export type RootReducerType = typeof rootReducer
 // определить автоматически тип всего объекта состояния
 export type AppRootStateType = ReturnType<RootReducerType>
