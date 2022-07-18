@@ -14,7 +14,7 @@ export const SideBar: FC<IProps> = react.memo(({filteredNotes}) => {
             {
                 filteredNotes.map((note, index) => {
                     return (
-                        <Item title={note.title}
+                        <Item title={note.title.length > 0 ? note.title : 'No title'}
                               date={note.date}
                               id={note.id}
                               key={index}
